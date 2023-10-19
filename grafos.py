@@ -6,19 +6,30 @@ grafo = {
     5:[1],
 }
 
-def profundidade(destino, origem, grafo = grafo):
-    achou = False
-    if origem[-1] == destino:
-        achou = True
-    else:
-        for i in grafo[origem[-1]]:
-            if i not in origem:
-                nova_origem = origem.copy()
-                nova_origem.append(i)
-                if profundidade(destino, nova_origem, grafo):
-                    achou = True
-    return achou
+def profundidade(grafo = grafo):
+    cores = dict()
+    pais = dict()
+    distancias = dict()
+    for i in grafo:
+        cores[i] = "branco"
+        pais[i] = None
+        distancias[i] = 0
+    for i in grafo:
+        if cores[i] == "branco":
+            cores[i] = "cinza"
+            cores, distancias, pais = visitando_profundidade(i, grafo, cores, distancias, pais)
 
+    print(distancias, cores, pais)
+
+def visitando_profundidade(vertice, grafo, cores, distancias, pais):
+    for i in grafo[vertice]:
+        if cores[i] == "branco":
+            distancias[i] = distancias[vertice] + 1
+            pais[i] = vertice
+            cores[i] = "cinza"
+            cores, distancias, pais = visitando_profundidade(i, grafo, cores, distancias, pais)
+        cores[vertice] = "preto"
+    return cores, distancias, pais
 
 import heapq
 
@@ -67,3 +78,4 @@ def largura(grafo, r):
 
 
 largura(grafo, 1)
+profundidade(grafo)
