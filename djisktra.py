@@ -16,31 +16,35 @@ def ler_grafo(v, a):
     return grafo
 
 def algoritmo_djikstra(grafo, origem):
-    distancia = ["inf" for i in range(1, len(grafo) + 1)]
+    distancia = {i:float("inf") for i in grafo}
     pais = [None for i in range(len(grafo))]
+    ja_foi = {i:False for i in grafo}
 
     distancia[origem] = 0
     pais[origem] = origem
 
-    candidatos = [origem]
+    candidatos = [(0, origem)]
     heapq.heapify(candidatos)
 
     while len(candidatos) > 0:
-        u = heapq.heappop(candidatos)
+        valores = heapq.heappop(candidatos)
+        u = valores[1]
+        valor = valores[0]
         for i in grafo[u]:
-            if distancia[i[1]] == "inf":
-                distancia[i[1]] = distancia[u] + i[0]
-                pais[i[1]] = u
-                heapq.heappush(candidatos, i[1])
-            elif distancia[i[1]] > distancia[u] + i[0]:
-                distancia[i[1]] = distancia[u] + i[0]
-                pais[i[1]] = u
-                heapq.heappush(candidatos, i[1])
+            if not ja_foi[i[1]]:
+                if distancia[i[1]] > distancia[u] + i[0]:
+                    distancia[i[1]] = valor + i[0]
+                    pais[i[1]] = u
+                    heapq.heappush(candidatos, i)
+
+
+        ja_foi[u] = True
 
     return distancia, pais
 
 v, a = map(int, input().split())
 
 grafo = ler_grafo(v, a)
+
 distancia, pais = algoritmo_djikstra(grafo, 1)
 print(distancia, pais)
