@@ -100,6 +100,7 @@ public class Matriz {
     //faz a matriz transposta de B para assim ter como acessar os vetores colunas
     //percorre os vetores de A e B^t e multiplica-os para colocar os resultados
     public static int[][] multiplicarMatriz(int[][]matrizA, int[][] matrizB){
+        if(matrizA.lenght != matrizB[0].lenght){return null};
         int[][] transpostaB = matrizTransposta(matrizB);
 
         //servem para de acordo com quando ja passou por todos os vetores i com o determinado
