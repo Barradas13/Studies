@@ -100,31 +100,20 @@ public class Matriz {
     //faz a matriz transposta de B para assim ter como acessar os vetores colunas
     //percorre os vetores de A e B^t e multiplica-os para colocar os resultados
     public static int[][] multiplicarMatriz(int[][]matrizA, int[][] matrizB){
-        if(matrizA.lenght != matrizB[0].lenght){return null};
         int[][] transpostaB = matrizTransposta(matrizB);
 
-        //servem para de acordo com quando ja passou por todos os vetores i com o determinado
-        //valor j ele apenas então soma mais um em inteiro e passa a ser percorrido com esse valor
-        float j_float = 0;
-        int j = 0;
-
         int[][] matrizC = new int[matrizA.length][transpostaB.length];
+        
         int i = 0;
+        int j = 0;
         while(j < matrizC[0].length && i != matrizC[0].length){
             matrizC[i][j] = multiplicaVetores(matrizA[i], transpostaB[j]);
-            j_float += (1.0/matrizA.length);
-
-            //para nao arredondar valores 0.5
-            if(j_float % 1 == 0.5){
-                j = Math.round(j_float - (j_float % 1));
-            }else{
-                j = Math.round(j_float);
-            }
             
             i ++;
             //se ja passou por todos os i com aquele j retorna i para um para passar com outro j
             if(i >= matrizC.length){
                 i=0;
+                j ++;
             }
         }
 
