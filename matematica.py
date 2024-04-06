@@ -1,4 +1,17 @@
+"""THIS ENTIRE CODE HAVE THE CODES THAT I DID FOR DOING MATH OPERATIONS, SUCH AS MODULE EXPONENTIAL
+    MATRIZ OPERATION (MULTIPLICATION...), FAST EXPONENTIAL, LAPLACE ALGORITHM AND A LOT MORE
+    IT IS DIVIDED INTO PARTS AS YOU CAN SEE ON THE SUMARRY"""
 
+"""
+SUMARRY:
+1) MODULATION MATH  -> LINE 14
+2) PRIME NUMBERS AND MDC  -> LINE 71
+3) MATRIZES OPERATIONS  -> LINE 103
+4) LA PLACE ALGORITHM  -> LINE 182
+
+"""
+
+#CODE RELATED TO MODULATION MATH 
 def modularizando( a, c):
     q = int(a/c)
     r = (q * c) - a
@@ -55,9 +68,7 @@ def exponenciacaoModulos(a,b,c):
 
     return modularizando(resultado, c)
 
-#TEORIA DOS NÚMEROS PRIMOS
-
-#MDC
+#PRIMES NUMBERS AND MDC
 def euclidiano( n, m):
     while n > 0 and m > 0:
         n, m = max(n, m), min(n, m)
@@ -87,6 +98,9 @@ def qtdPrimos( n):
             
     return soma
 
+
+
+#CODE RELATED TO OPERATIONS IN MATRIZ
 def criaMatriz(n, m):
     matriz = []
     for i in range(n):
@@ -163,4 +177,52 @@ def exponenciacaoMatriz(matriz, n):
         1, 0)         Fn,   Fn-1)      que calcule matriz ^ n e pegamos então o valor 
     """
 
-print(exponenciacaoMatriz([[2,2],[2,2]],6))
+
+
+#CODE TO CALCULATE A DETERMINANT OF A MATRIZ
+def reduzMatriz(matriz, I = 0, J = 0):
+
+    matrizRetornar = [[] for i in range(len(matriz) -1)]
+
+    linhaAtual = 0
+
+    for i in range(len(matriz)):
+        for j in range(len(matriz[0])):
+            if i != I and j != J:
+                matrizRetornar[linhaAtual].append(matriz[i][j])
+                if len(matrizRetornar[linhaAtual]) == len(matriz[0]) -1:
+                    linhaAtual += 1
+
+    return matrizRetornar
+
+def calculaDeterminante(matriz):
+
+    if len(matriz) == 2 and len(matriz[0]) == 2:
+        diagonalPrincipal = matriz[0][0] * matriz[1][1]
+        diagonalSegunda = matriz[0][1] * matriz[1][0]
+        return diagonalPrincipal - diagonalSegunda
+    
+    if len(matriz) == 3 and len(matriz[0]) == 3:
+        diagonalPrincipal = (matriz[0][0] * matriz[1][1] * matriz[2][2]) + (matriz[0][1] * matriz[1][2] * matriz[2][0]) + (matriz[0][2] * matriz[1][0] * matriz[2][1])
+        diagonalSegunda = matriz[0][2] * matriz[1][1] * matriz[2][0] + matriz[0][0] * matriz[1][2] * matriz[2][1] + matriz[0][1] * matriz[1][0] * matriz[2][2]
+        return diagonalPrincipal - diagonalSegunda
+
+    lista = [i for i in matriz[0]]
+
+    for i in range(len(lista)):
+        if i % 2 == 0:
+            K = 1
+        else:
+            K = -1
+        
+        lista[i] *= K * calculaDeterminante(reduzMatriz(matriz, 0, i))
+
+    return sum(lista)
+
+
+matriz = [[1,2,3,4],
+          [0,1,2,0],
+          [1,2,0,0],
+          [3,2,2,3]]
+
+print(calculaDeterminante(matriz))
